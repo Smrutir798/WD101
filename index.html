@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registration Form</title>
+  <link href="./output.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+
+  <!-- Registration Form -->
+  <div class="max-w-md mx-auto mt-10 bg-white p-6 rounded-lg shadow-md">
+    <h1 class="text-2xl font-bold mb-4 text-center">Registration Form</h1>
+    <form id="registrationForm" class="space-y-4">
+      <div>
+        <label for="name" class="block font-medium">Name</label>
+        <input type="text" id="name" class="w-full p-2 border rounded-md" placeholder="Enter your name" required>
+      </div>
+      <div>
+        <label for="email" class="block font-medium">Email</label>
+        <input type="email" id="email" class="w-full p-2 border rounded-md" placeholder="Enter your email" required>
+      </div>
+      <div>
+        <label for="password" class="block font-medium">Password</label>
+        <input type="password" id="password" class="w-full p-2 border rounded-md" placeholder="Enter your password" required>
+      </div>
+      <div>
+        <label for="dob" class="block font-medium">Date of Birth</label>
+        <input type="date" id="dob" class="w-full p-2 border rounded-md" required>
+      </div>
+      <div>
+        <input type="checkbox" id="terms" required>
+        <label for="terms" class="font-medium">Accept Terms & Conditions</label>
+      </div>
+      <button type="submit" class="w-full bg-green-500 text-white p-2 rounded-md hover:bg-green-600">Submit</button>
+    </form>
+  </div>
+
+  <!-- Entries Table -->
+  <div class="max-w-3xl mx-auto mt-10">
+    <h2 class="text-xl font-bold mb-4 text-center">Entries</h2>
+    <table class="table-auto w-full bg-white shadow-md rounded-lg">
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="px-4 py-2">Name</th>
+          <th class="px-4 py-2">Email</th>
+          <th class="px-4 py-2">Password</th>
+          <th class="px-4 py-2">DOB</th>
+          <th class="px-4 py-2">Accepted Terms?</th>
+        </tr>
+      </thead>
+      <tbody id="entriesTable" class="text-center">
+        <!-- Dynamic content will be inserted here -->
+      </tbody>
+    </table>
+  </div>
+
+  <script src="./script.js"></script>
+
+</body>
+</html>
