@@ -1,42 +1,77 @@
-// Handle form submission
-document.getElementById('registrationForm').addEventListener('submit', function(event) {
-    event.preventDefault();
+function loadEntries() {
+  const entries = JSON.parse(localStorage.getItem('entries')) || [];
+  const tableBody = document.getElementById('entriesTable');
+  tableBody.innerHTML = ''; // Clear the table
 
-    // Get form values
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    const dob = document.getElementById('dob').value;
-    const termsAccepted = document.getElementById('terms').checked;
-
-    // Calculate the current date and the maximum allowable date of birth
-    const today = new Date();
-    const minDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
-    const formattedDate = minDate.toISOString().split('T')[0]; // Format to YYYY-MM-DD
-
-    // Validate that the date of birth is less than or equal to the max date
-    if (dob > formattedDate) {
-        alert("You must be at least 18 years old.");
-        return; // Stop form submission
-    }
-
-    // Create a new row for the table
+  entries.forEach(entry => {
     const newRow = `
       <tr class="bg-white border-t">
-        <td class="px-4 py-2">${name}</td>
-        <td class="px-4 py-2">${email}</td>
-        <td class="px-4 py-2">${password}</td>
-        <td class="px-4 py-2">${dob}</td>
-        <td class="px-4 py-2">${termsAccepted}</td>
+        <td class="px-4 py-2">${entry.name}</td>
+        <td class="px-4 py-2">${entry.email}</td>
+        <td class="px-4 py-2">${entry.password}</td>
+        <td class="px-4 py-2">${entry.dob}</td>
+        <td class="px-4 py-2">${entry.termsAccepted}</td>
       </tr>
     `;
+    tableBody.innerHTML += newRow;
+  });
+}
 
-    // Append the new row to the table body
-    document.getElementById('entriesTable').innerHTML += newRow;
+// Check if age is between 18 and 55
+function validateAge(dob) {
+  const birthDate = new Date(dob);
+  const today = new Date();
+  const age = today.getFullYear() - birthDate.getFullYear();
+  const monthDifference = today.getMonth() - birthDate.getMonth();
 
-    // Reset the form
-    document.getElementById('registrationForm').reset();
+  if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+    return age - 1;
+  }
+  return age;
+}
 
-    // Reset the max attribute for the date input
-    document.getElementById('dob').setAttribute('max', formattedDate);
+// Handle form submission
+document.getElementById('registrationForm').addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  // Get form values
+  const name = document.getElementById('name').value;
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+  const dob = document.getElementById('dob').value;
+  const termsAccepted = document.getElementById('terms').checked;
+
+  // Validate age
+  const age = validateAge(dob);
+  if (age < 18 || age > 55) {
+    alert("You must be between 18 and 55 years old.");
+    return;
+  }
+
+  // Retrieve existing entries from localStorage
+  const entries = JSON.parse(localStorage.getItem('entries')) || [];
+
+  // Create new entry
+  const newEntry = {
+    name,
+    email,
+    password,
+    dob,
+    termsAccepted
+  };
+
+  // Append the new entry to the entries array
+  entries.push(newEntry);
+
+  // Update localStorage
+  localStorage.setItem('entries', JSON.stringify(entries));
+
+  // Reload the table to reflect the new entry
+  loadEntries();
+
+  // Reset the form
+  document.getElementById('registrationForm').reset();
 });
+
+// Load entries when the page is loaded
+window.onload = loadEntries;
